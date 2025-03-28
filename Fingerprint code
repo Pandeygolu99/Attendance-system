@@ -1,9 +1,10 @@
 /*******************************************\
-
+//campus/class/Lab automation system
+//G.P Nainital
  
  ****************************************************/
 
-
+//use adafruit library
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
 #include <WiFi.h>
