@@ -1,0 +1,40 @@
+#include <Arduino.h>
+
+// Define the MQ-3 sensor pin and output components
+#define MQ3_SENSOR_PIN 34 // GPIO pin where MQ-3 sensor is connected
+#define BUZZER_PIN 25      // GPIO pin for buzzer
+#define MOTOR_PIN 26       // GPIO pin for motor
+#define LED_RED 27         // GPIO pin for red LED (alert)
+#define LED_GREEN 14       // GPIO pin for green LED (safe)
+#define THRESHOLD 300      // Alcohol level threshold (adjust based on calibration)
+
+void setup() {
+    Serial.begin(115200);   // Initialize serial communication
+    pinMode(MQ3_SENSOR_PIN, INPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
+    pinMode(MOTOR_PIN, OUTPUT);
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_GREEN, OUTPUT);
+}
+
+void loop() {
+    int sensorValue = analogRead(MQ3_SENSOR_PIN); // Read the sensor value
+    Serial.print("Alcohol Sensor Value: ");
+    Serial.println(sensorValue);
+    
+    // Check if the sensor value exceeds the threshold
+    if (sensorValue > THRESHOLD) {
+        Serial.println("Alcohol detected! Alert!");
+        digitalWrite(BUZZER_PIN, HIGH); // Activate buzzer
+        digitalWrite(MOTOR_PIN, HIGH);  // Activate motor
+        digitalWrite(LED_RED, HIGH);    // Turn on red LED
+        digitalWrite(LED_GREEN, LOW);   // Turn off green LED
+    } else {
+        digitalWrite(BUZZER_PIN, LOW);  // Deactivate buzzer
+        digitalWrite(MOTOR_PIN, LOW);   // Deactivate motor
+        digitalWrite(LED_RED, LOW);     // Turn off red LED
+        digitalWrite(LED_GREEN, HIGH);  // Turn on green LED
+    }
+    
+    delay(1000); // Wait for a second before next reading
+}
